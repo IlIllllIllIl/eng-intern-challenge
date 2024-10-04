@@ -81,14 +81,21 @@ def translatorToEnglish(input):
 
 def translatorToBraille(input):
     braille = []
+    is_num_seq = False
+
     for i in input:
         if i.isupper():
             braille.append(english_to_braille['capital follows'])
             braille.append(english_to_braille[i.lower()])
         elif i.isdigit():
-            braille.append(english_to_braille['number follows'])
+            if not is_num_seq:
+                braille.append(english_to_braille['number follows'])
+                is_num_seq = True    
             braille.append(number_english[i])
         else:
+            if is_num_seq:
+                is_num_seq = False
             braille.append(english_to_braille[i])
     return ''.join(braille)
 
+print(translator(' '.join(sys.argv[1:])))
